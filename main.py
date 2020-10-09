@@ -1,5 +1,5 @@
 def imprime_tabuleiro(t):
-    print(chr(27) + "[2J" + "\n        |     |      \n     "+t[0][0]+"  |  "+t[0][1]+"  | "+t[0][2] +" \n   _____|_____|_____ \n        |     |      \n     "+t[1][0] +"  |  "+t[1][1] +"  |  "+t[1][2] +"   \n   _____|_____|_____ \n        |     |      \n     "+t[2][0] +"  |  "+t[2][1] +"  |  "+t[2][2] +"   \n        |     |      ")
+    print(chr(27) + "[2J" + "\n        |     |      \n     "+t[0][0]+"  |  "+t[0][1]+"  |  "+t[0][2] +" \n   _____|_____|_____ \n        |     |      \n     "+t[1][0] +"  |  "+t[1][1] +"  |  "+t[1][2] +"   \n   _____|_____|_____ \n        |     |      \n     "+t[2][0] +"  |  "+t[2][1] +"  |  "+t[2][2] +"   \n        |     |      ")
 
 def reseta_tabuleiro():
     t = [["a","b","c"],["d","e","f"],["g","h","i"]]
@@ -84,24 +84,47 @@ def alterna_vez(vez):
         vez="x"
     return vez
 
-def verifica_se_ganhou():
-    print("")
+def verifica_se_ganhou(t,vez):
+    for i in range (0,3):
+        if (t[i][0]==vez) and (t[i][1]==vez) and (t[i][2]==vez) or (t[0][i]==vez) and (t[1][i]==vez) and (t[2][i]==vez):
+            return "s"
+    if (t[0][0]==vez) and (t[1][1]==vez) and (t[2][2]==vez) or (t[0][2]==vez) and (t[1][1]==vez) and (t[2][0]==vez):
+        return "s"
+    return "n"
 
-def verifica_se_deu_velha():
-    print("")
+def verifica_se_deu_velha(t):
+    if (t[0][0]!="a") and (t[0][1]!="b") and (t[0][2]!="c") and (t[1][0]!="d") and (t[1][1]!="e") and (t[1][2]!="f") and (t[2][0]!="g") and (t[2][1]!="h") and (t[2][2]!="i"):
+        return "s"
+        
+    else:
+        return "n"
 
 def termina_jogo():
-    print("") 
+    novamente = input("Você deseja jogar novamente? S/n ")
+    if (novamente == "s") or ( novamente == "S")or ( novamente == ""):
+        return "não"
+    else:
+        return "sim"
 
 def main():
-    t=reseta_tabuleiro()
-    resultado=" "
-    vez="o"
-    while (resultado==" "):
-        vez=alterna_vez(vez)
-        imprime_tabuleiro(t)
-        preenche_tabuleiro(t,vez)
-    termina_jogo()
+    fim = "não"
+    while (fim=="não"):
+        t=reseta_tabuleiro()
+        resultado=" "
+        vez="x"
+        while (resultado==" "):
+            imprime_tabuleiro(t)
+            preenche_tabuleiro(t,vez)
+            if (verifica_se_deu_velha(t)=="s"):
+                resultado="ok"
+                imprime_tabuleiro(t)
+                print ("Deu velha!")
+            if (verifica_se_ganhou(t,vez)=="s"):
+                resultado="ok"
+                imprime_tabuleiro(t)
+                print ("O "+vez+" ganhou!")
+            vez=alterna_vez(vez)
+        fim=termina_jogo()
         
         
 
